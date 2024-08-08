@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="layout/fragmentos :: head"></head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: nav1"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main><!--editar-->
+                    <div class="container-fluid px-4 pt-4">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${mensaje != null}">
+                            <span th:text="${mensaje}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        
+                        <!--Aqui inicia el formulario del producto-->
+                        <form th:action="@{/producto/form}" th:object="${producto}" method="post">
+                            <div class="card">
+                                <div class="card-header">
+                                    Datos del producto
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label>Categoria:</label>
+                                            <select th:field="*{categoria.id}" class="form-select" required>
+                                                <option value="">Seleccione una opción</option>
+                                                <option th:each="item : ${listaCategorias}" th:value="${item.id}" th:text="${item.nombre}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label>Nombre del producto:</label>
+                                            <input type="text" th:field="*{nombre}" class="form-control" th:errorclass="'form-control alert-danger'" placeholder="Ingrese el nombre">
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}">Campo obligatorio</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label>Precio del producto:</label>
+                                            <input type="text" th:field="*{precio}" class="form-control" th:errorclass="'form-control alert-danger'" placeholder="Ingrese el precio">
+                                            <small class="form-text text-danger" th:if="${#fields.hasErrors('precio')}">Campo requerido</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 text-center">
+                                            <button type="submit" class="btn btn-dark">
+                                                <i class="fa-solid fa-floppy-disk"></i>Guardar producto
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--Fin del formulario del producto listaEditar-->
+                        <br><br>
+                        <!--Inicio de tabla de productos-->
+                        <div class="card">
+                            <div class="card-header">
+                                Productos Registrados
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Categoria</th>
+                                            <th>Nombre</th>
+                                            <th>Precio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item: ${listaProductos}">
+                                            <td th:text="${item.categoria.nombre}"></td>
+                                            <td th:text="${item.nombre}"></td>
+                                            <td th:text="${item.precio}"></td>
+                                            <td class="text-center">
+                                                <a class="btn btn-warning editarProducto"
+                                                th:data-id="${item.id}" 
+                                                th:data-categoria="${item.categoria.id}"
+                                                th:data-nombre="${item.nombre}"
+                                                th:data-precio="${item.precio}">
+                                                    <i class="fa-regular fa-pen-to-square"></i> Editar
+                                                </a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a th:href="@{/producto/eliminar/} + ${item.id}" class="btn btn-danger"
+                                                onclick="return confirm('Esta seguro?')"> Eliminar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </main>
+                    <!-- Inicio de Modal -->
+                    <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form th:action="@{/producto/form}" th:object="${producto}" method="post">
+                                <div class="modal-body">
+                                    <input type="hidden" th:field="*{id}">
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label>Categoria:</label>
+                                            <select name="categoria.id" id="cboCategoria" class="form-select" required>
+                                                <option value="">Seleccione una opción</option>
+                                                <option th:each="item : ${listaCategorias}" th:value="${item.id}" th:text="${item.nombre}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label>Nombre del producto:</label>
+                                            <input type="text" name="nombre" id="txtNombre" class="form-control" placeholder="Ingrese el nombre" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label>Precio del producto:</label>
+                                            <input type="text" name="precio" id="txtPrecio" class="form-control" placeholder="Ingrese el precio" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        </form>
+                        </div>
+                        </div>
+                    </div>
+                    <!--Fin de Modal-->
+                <footer th:replace="layout/fragmentos :: pie"></footer>
+                <script type="text/javascript" th:src="@{/js/producto.js}"></script>
+            </div>
+        </div>
+        <div th:replace="layout/fragmentos :: librerias"></div>
+    </body>
+</html>

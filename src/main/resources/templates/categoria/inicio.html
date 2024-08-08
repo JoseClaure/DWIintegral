@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="layout/fragmentos :: head">
+
+    </head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: nav1"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid pt-4 px-4">
+                        <!--Inicio de Formulario-->
+                        <form th:action="@{/categoria/form}" th:object="${categoria}" method="post">
+                            <input type="hidden" th:field="*{id}">
+                            <div class="card">
+                                <div class="card-header">
+                                    Datos de categoria
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="">Nombre:</label>
+                                            <input th:field="*{nombre}" type="text" class="form-control"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="">Descripcion:</label>
+                                            <input th:field="*{descripcion}" type="text" class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fa-solid fa-floppy-disk"></i>Guardar categoria
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- Fin de Formulario-->
+                        <br>
+                        <!---Inicio de tabla para mostrar categorias-->
+                        <div class="card">
+                            <div class="card-header">
+                                Categorias registradas
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Descripcion</th>
+                                            <th>Editar</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!--se usa el nombre que envia el controlador-->
+                                        <tr th:each="item : ${listaCategorias}">
+                                            <td th:text="${item.nombre}"></td>
+                                            <td th:text="${item.descripcion}"></td>
+                                            <td class="text-center">
+                                                <a class="btn btn-warning" th:href="@{/categoria/editar/} + ${item.id}">
+                                                    <i class="fa-solid fa-pen-to-square"></i>Editar
+                                                </a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-danger" th:href="@{/categoria/eliminar/} + ${item.id}" 
+                                                onclick="return confirm('¿Desea eliminar la categoría?')">
+                                                    <i class="fa-solid fa-trash-can"></i>Eliminar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!---Fin de tabla-->
+                    </div>
+                </main>
+                <footer th:replace="layout/fragmentos :: pie"></footer>
+            </div>
+        </div>
+        <div th:replace="layout/fragmentos :: librerias"></div>
+    </body>
+</html>

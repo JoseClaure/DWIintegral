@@ -1,0 +1,40 @@
+body{
+	background-color: #3c8dbc;
+}
+
+.cuadro{
+	background-color: #FFFFFF;
+	max-width: 450px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15%;
+	text-align: center;
+	border-radius: 15px;
+	box-shadow: 0px 0px 20px #000000;
+}
+
+h3{
+	padding-top: 25px;
+	margin-bottom: 30px;
+	font-size: 18px;
+}
+
+.linea{
+	border-bottom: 3px solid #3c8dbc;
+	padding-bottom: 5px;
+}
+
+.margen{
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.colorBoton{
+	background-color: #3c8dbc;
+	border-color: #3c8dbc;
+}
+
+.colorBoton:hover{
+	background-color: #D5053B;
+	border-color: #D5053B;
+}
